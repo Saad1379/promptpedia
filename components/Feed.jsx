@@ -98,6 +98,7 @@ const Feed = () => {
             onChange={handleSearchChange}
             required
             className="search_input peer"
+            disabled={favoritesToggle}
           />
         </form>
         {session?.user && (

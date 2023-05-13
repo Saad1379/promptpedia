@@ -11,7 +11,7 @@ const Favorite = ({ post }) => {
   }, [favoritesPrompts]);
   return (
     <div
-      className="copy_btn"
+      className="right_btns"
       onClick={() =>
         !isfavorite ? addToFavorites(post) : removeFromFavorites(post)
       }

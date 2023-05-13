@@ -50,7 +50,7 @@ const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
           </div>
         </div>
 
-        <div className="copy_btn" onClick={handleCopy}>
+        <div className="right_btns" onClick={handleCopy}>
           <Image
             src={
               copied === post.prompt
