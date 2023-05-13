@@ -4,14 +4,13 @@ import { useState } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
+import Favorite from "./Favorite";
 
 const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
   const { data: session } = useSession();
   const pathName = usePathname();
   const router = useRouter();
-
   const [copied, setCopied] = useState("");
-
   const handleProfileClick = () => {
     console.log(post);
 
@@ -27,7 +26,7 @@ const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
   };
 
   return (
-    <div className="prompt_card">
+    <div className="prompt_card flex-1">
       <div className="flex justify-between items-start gap-5">
         <div
           className="flex-1 flex justify-start items-center gap-3 cursor-pointer"
@@ -63,6 +62,7 @@ const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
             height={12}
           />
         </div>
+        {session?.user && <Favorite post={post} />}
       </div>
 
       <p className="my-4 font-satoshi text-sm text-gray-700">{post.prompt}</p>
@@ -70,7 +70,7 @@ const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
         className="font-inter text-sm blue_gradient cursor-pointer"
         onClick={() => handleTagClick && handleTagClick(post.tag)}
       >
-        {post.tag}
+        #{post.tag}
       </p>
 
       {session?.user.id === post.creator._id && pathName === "/profile" && (

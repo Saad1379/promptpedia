@@ -1,6 +1,7 @@
 import "@styles/globals.css";
 import Nav from "@components/Nav";
 import Provider from "@components/Provider";
+import { FavoritesContextProvider } from "@components/FavoritesContextProvider";
 export const metadata = {
   title: "Promptpedia",
   description: "Share and discover AI prompts.",
@@ -11,13 +12,15 @@ const RootLayout = ({ children }) => {
     <html lang="en">
       <body>
         <Provider>
-          <div className="main">
-            <div className="gradient"></div>
-          </div>
-          <main className="app">
-            <Nav />
-            {children}
-          </main>
+          <FavoritesContextProvider>
+            <div className="main">
+              <div className="gradient"></div>
+            </div>
+            <main className="app">
+              <Nav />
+              {children}
+            </main>
+          </FavoritesContextProvider>
         </Provider>
       </body>
     </html>

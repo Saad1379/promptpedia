@@ -89,6 +89,10 @@
   @apply mt-5 text-5xl font-extrabold leading-[1.15] text-black sm:text-6xl;
 }
 
+.large_text {
+  @apply mt-5 text-4xl font-extrabold leading-[1.15] text-black sm:text-6xl;
+}
+
 .orange_gradient {
   @apply bg-gradient-to-r from-amber-500 via-orange-600 to-yellow-500 bg-clip-text text-transparent;
 }
@@ -106,7 +110,11 @@
 }
 
 .search_input {
-  @apply block w-full rounded-md border border-gray-200 bg-white py-2.5 font-satoshi pl-5 pr-12 text-sm shadow-lg font-medium focus:border-black focus:outline-none focus:ring-0;
+  @apply w-full rounded-md border border-gray-200 bg-white py-2.5 font-satoshi pl-5 pr-12 text-sm shadow-lg font-medium focus:border-black focus:outline-none focus:ring-0;
+}
+
+.fav_btn {
+  @apply block rounded-md w-[3rem] flex items-center justify-center border border-gray-200 bg-white py-2.5 font-satoshi pl-0 pr-0.5 text-sm shadow-lg font-medium focus:border-black focus:outline-none focus:ring-0;
 }
 
 .copy_btn {

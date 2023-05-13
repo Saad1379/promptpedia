@@ -1,3 +1,4 @@
+import Loading from "@app/profile/loading";
 import Link from "next/link";
 
 const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
@@ -33,14 +34,14 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
           <span className="font-satoshi font-semibold text-base text-gray-700">
             Field of Prompt{" "}
             <span className="font-normal">
-              (#product, #webdevelopment, #idea, etc.)
+              (product, webdevelopment, idea, etc.)
             </span>
           </span>
           <input
             value={post.tag}
             onChange={(e) => setPost({ ...post, tag: e.target.value })}
             type="text"
-            placeholder="#Tag"
+            placeholder="Tag"
             required
             className="form_input"
           />
@@ -56,7 +57,7 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
             disabled={submitting}
             className="px-5 py-1.5 text-sm bg-primary-orange rounded-full text-white"
           >
-            {submitting ? `${type}ing...` : type}
+            {submitting ? <Loading width={20} height={20} /> : type}
           </button>
         </div>
       </form>

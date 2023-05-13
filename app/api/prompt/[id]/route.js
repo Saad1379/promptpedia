@@ -1,5 +1,7 @@
 import Prompt from "@models/prompt";
+import User from "@models/user";
 import { connectToDB } from "@utils/database";
+import { ObjectId } from "mongodb";
 
 export const GET = async (request, { params }) => {
   try {
@@ -43,11 +45,25 @@ export const DELETE = async (request, { params }) => {
   try {
     await connectToDB();
 
+    // Find all users who have marked the prompt as a favorite
+    const users = await User.find({ favorites: params.id });
+    console.log(users);
+    // Update each user's favorites array to remove the deleted prompt ID
+    await Promise.all(
+      users.map(async (user) => {
+        user.favorites = user.favorites.filter((favId) => {
+          return favId.toString() === params.id;
+        });
+        await user.save();
+      })
+    );
+    console.log(users[0].favorites);
     // Find the prompt by ID and remove it
-    await Prompt.findByIdAndRemove(params.id);
+    const deletedPrompt = await Prompt.findByIdAndRemove(params.id);
 
     return new Response("Prompt deleted successfully", { status: 200 });
   } catch (error) {
+    console.log(error);
     return new Response("Error deleting prompt", { status: 500 });
   }
 };

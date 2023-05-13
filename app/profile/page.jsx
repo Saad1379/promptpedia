@@ -8,9 +8,17 @@ import Profile from "@components/Profile";
 
 const MyProfile = () => {
   const router = useRouter();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   const [myPosts, setMyPosts] = useState([]);
+
+  if (status === "loading") {
+    return <p>Loading...</p>;
+  }
+
+  if (status === "unauthenticated") {
+    return <h1 className="large_text orange_gradient">Access Denied</h1>;
+  }
 
   useEffect(() => {
     const fetchPosts = async () => {

@@ -1,13 +1,22 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
 import PromptCard from "./PromptCard";
+import { useSession } from "next-auth/react";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+
+import { FavoritesContext } from "./FavoritesContextProvider";
 
 const PromptCardList = ({ data, handleTagClick }) => {
+  const [promptCardData, setPromptCardData] = useState(data);
+  console.log(promptCardData);
+  useEffect(() => {
+    setPromptCardData(data);
+  }, [data]);
   return (
     <div className="mt-16 prompt_layout">
-      {data.map((post) => (
+      {promptCardData.map((post) => (
         <PromptCard
           key={post._id}
           post={post}
@@ -20,14 +29,21 @@ const PromptCardList = ({ data, handleTagClick }) => {
 
 const Feed = () => {
   const [allPosts, setAllPosts] = useState([]);
-
+  const { data: session } = useSession();
   // Search states
   const [searchText, setSearchText] = useState("");
   const [searchTimeout, setSearchTimeout] = useState(null);
   const [searchedResults, setSearchedResults] = useState([]);
 
+  const { favoritesPrompts } = useContext(FavoritesContext);
+
+  const [favoritesToggle, setFavoritesToggle] = useState(false);
+
   const fetchPosts = async () => {
-    const response = await fetch("/api/prompt");
+    // const response = session?.user
+    //   ? await fetch(`/api/prompt/favorites/${session?.user.id}`)
+    //   : await fetch(`/api/prompt`);
+    const response = await fetch(`/api/prompt`);
     const data = await response.json();
 
     setAllPosts(data);
@@ -67,21 +83,42 @@ const Feed = () => {
     setSearchedResults(searchResult);
   };
 
+  const handleFavoritesToggle = () => {
+    setFavoritesToggle((prev) => !prev);
+  };
+
   return (
     <section className="feed">
-      <form className="relative w-full flex-center">
-        <input
-          type="text"
-          placeholder="Search for a tag or a username"
-          value={searchText}
-          onChange={handleSearchChange}
-          required
-          className="search_input peer"
-        />
-      </form>
-
+      <div className="search w-full flex gap-3">
+        <form className="relative w-full flex-center">
+          <input
+            type="text"
+            placeholder="Search for a tag or a username"
+            value={searchText}
+            onChange={handleSearchChange}
+            required
+            className="search_input peer"
+          />
+        </form>
+        {session?.user && (
+          <button className="fav_btn" onClick={handleFavoritesToggle}>
+            <span className="flex items-center justify-center">
+              {favoritesToggle ? (
+                <AiFillHeart width={15} height={15} color="red" />
+              ) : (
+                <AiOutlineHeart width={15} height={15} color="red" />
+              )}
+            </span>
+          </button>
+        )}
+      </div>
       {/* All Prompts */}
-      {searchText ? (
+      {favoritesToggle ? (
+        <PromptCardList
+          data={favoritesPrompts}
+          handleTagClick={handleTagClick}
+        />
+      ) : searchText ? (
         <PromptCardList
           data={searchedResults}
           handleTagClick={handleTagClick}
